@@ -1,9 +1,18 @@
 const express = require('express')
 const app = express();
+const db = require('./models')
+
 require('dotenv').config()
 
 const port = process.env.port || 4000;
 
-app.listen(port, () => {
-    console.log(`listening to port ${port}`)
+
+db.sequelize.sync().then(() => {
+    app.listen(port, () => {
+        console.log(`listening to port ${port}`)
+    })
+}).catch((err) => {
+    console.log(err)
 })
+
+
