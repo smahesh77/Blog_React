@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Link to="/createpost"> Create a post </Link>
+        <Link to="/createpost"> Create a post </Link> {/* this is like navigator in flutter, goes to the component of the give path that will be a react page */}
         <Link to="/"> Home Page </Link>
 
         <Switch>   {/* to select routes we use switch */}

@@ -1,64 +1,62 @@
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import React from 'react'
 import axios from "axios";
+import { Formik, Form, Field, ErrorMessage } from 'formik' // for forms
+import * as yup from 'yup' //for validation
 
-function CreatePost() {
-  const initialValues = {
-    title: "",
-    postText: "",
-    username: "",
-  };
+function createPost() {
+    const initialValues = {
+        title: "",
+        postText: "",
+        username: "",
+    };
 
-  const validationSchema = Yup.object().shape({
-    title: Yup.string().required("You must input a Title!"),
-    postText: Yup.string().required(),
-    username: Yup.string().min(3).max(15).required(),
-  });
+    const onSubmit = (data) => {
+        axios.post("http://localhost:3001/posts", data).then((response) => {// sends the data to server 
+            console.log(response.data)
+            console.log("IT WORKS")
+        })
+    }
 
-  const onSubmit = (data) => {
-    axios.post("http://localhost:3001/posts", data).then((response) => {
-      console.log("IT WORKED");
-    });
-  };
-  return (
-    <div className="createPostPage">
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
-        <Form className="formContainer">
-          <label>Title: </label>
-          <ErrorMessage name="title" component="span" />
-          <Field
-            autocomplete="off"
-            id="inputCreatePost"
-            name="title"
-            placeholder="(Ex. Title...)"
-          />
-          <label>Post: </label>
-          <ErrorMessage name="postText" component="span" />
-          <Field
-            autocomplete="off"
-            id="inputCreatePost"
-            name="postText"
-            placeholder="(Ex. Post...)"
-          />
-          <label>Username: </label>
-          <ErrorMessage name="username" component="span" />
-          <Field
-            autocomplete="off"
-            id="inputCreatePost"
-            name="username"
-            placeholder="(Ex. John123...)"
-          />
+    const validationSchema = yup.object().shape({ // basically checks for stuff like pass too weak name too small valid gmail stuff like that
+        title: yup.string().required(), // enter your custom error messges inside the required 
+        postText: yup.string().required(),
+        username: yup.string().required("Enter ya name brosky").min(3, "Your name aint that short homie").max(15, "Quit playin' fool"),
 
-          <button type="submit"> Create Post</button>
-        </Form>
-      </Formik>
-    </div>
-  );
+    })
+
+    return (
+        <div className="createPostPage">
+            <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+                <Form className="formContainer">
+                    <label>Title: </label>
+                    <Field
+                        id="inputCreatePost"
+                        name="title"
+                        placeholder="(Ex. Title...)"
+                    />
+                    <ErrorMessage className='error' name="title" component="span" />
+
+                    <label>Post: </label>
+                    <Field
+                        id="inputCreatePost"
+                        name="postText"
+                        placeholder="(Ex. Post...)"
+                    />
+                    <ErrorMessage className='error' name="postText" component="span" />
+                    <label>Username: </label>
+                    <Field
+                        id="inputCreatePost"
+                        name="username"
+                        placeholder="(Ex. sammy)"
+                    />
+                    <ErrorMessage className='error' name="username" component="span" />
+
+
+                    <button type="submit"> Create Post</button>
+                </Form>
+            </Formik>
+        </div>
+    );
 }
 
-export default CreatePost;
+export default createPost
