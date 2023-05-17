@@ -1,18 +1,19 @@
+
 module.exports = (sequelize, DataTypes) => {
-    const Posts = sequelize.define("Posts", {// same as mongoose.model("name", schema)
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      postText: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    });
-  
-    return Posts;
-  };
+  const Posts = sequelize.define("Posts", {// same as mongoose.model("name", schema)
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    postText: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+
+  return Posts;
+};
