@@ -34,9 +34,9 @@ function CreatePost() {
                     <label>Title: </label>
                     <Field
                         id="inputCreatePost"
-                        name="title"
+                        name="title"                        
                         placeholder="(Ex. Title...)"
-                    />
+                    />  {/* thw title postText and username has the exactly same as that of the sql model only then the data could be send*/}
                     <ErrorMessage className='error' name="title" component="span" />
 
                     <label>Post: </label>
