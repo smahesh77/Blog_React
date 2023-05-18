@@ -2,8 +2,10 @@ import React from 'react'
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from 'formik' // for forms
 import * as yup from 'yup' //for validation
+import { useHistory } from 'react-router-dom'
 
-function createPost() {
+function CreatePost() {
+    let history = useHistory();
     const initialValues = {
         title: "",
         postText: "",
@@ -14,6 +16,7 @@ function createPost() {
         axios.post("http://localhost:3001/posts", data).then((response) => {// sends the data to server 
             console.log(response.data)
             console.log("IT WORKS")
+            history.push("/");
         })
     }
 
@@ -52,11 +55,11 @@ function createPost() {
                     <ErrorMessage className='error' name="username" component="span" />
 
 
-                    <button type="submit"> Create Post</button>
+                    <button type="submit" on > Create Post</button>
                 </Form>
             </Formik>
         </div>
     );
 }
 
-export default createPost
+export default CreatePost
