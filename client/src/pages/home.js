@@ -14,12 +14,13 @@ function Home() {
             setListOfPosts(response.data)// this will somehow send the data to listpost, dw about it now
         })
     }, []);
-    
+    // to make the new blogs come first
+    const reversedPosts = [...listOfPosts].reverse();
     //value will go through each object in the list
     return (
 
         <div>
-            {listOfPosts.map((value, key) => {
+            {reversedPosts.map((value, key) => {
                 return (
                     <div className="post" onClick={() => {history.push(`/post/${value.id}`)}}>{/**navigator.push (where you want to go the route) */}
                         <div className="title"> {value.title} </div>
