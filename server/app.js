@@ -12,7 +12,7 @@ app.use(express.json())
 // })
 app.use('/posts', postRouter)
 app.use('/comments', commentRouter)
-app.use('/auth', userRouter)
+app.use('/auth', userRouter);
 
 
 module.exports = app

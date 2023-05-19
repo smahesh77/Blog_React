@@ -5,6 +5,8 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom'
 import Home from './pages/home';
 import createPost from './pages/createPost';
 import Post from './pages/Post';
+import Reg from './pages/reg';
+import Login from './pages/login';
 
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
       <div className="navbar">
           <Link to="/"> Home Page</Link>
           <Link to="/createpost"> Create A Post</Link>
+          <Link to="/log"> Login</Link>
+          <Link to="/reg"> reg</Link>
       </div> 
         
 
@@ -23,6 +27,8 @@ function App() {
           <Route path='/' exact component={Home} />
           <Route path='/createpost' exact component={createPost} />
           <Route path='/post/:id' exact component={Post} />
+          <Route path='/log' exact component={Login} />
+          <Route path='/reg' exact component={Reg} />
         </Switch>
       </Router>
     </div>
