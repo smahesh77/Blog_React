@@ -16,7 +16,7 @@ function CreatePost() {
         axios.post("http://localhost:3001/posts", data).then((response) => {// sends the data to server 
             console.log(response.data)
             console.log("IT WORKS")
-            history.push("/");
+            history.push("/")
         })
     }
 

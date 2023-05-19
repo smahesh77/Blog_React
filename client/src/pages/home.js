@@ -22,7 +22,7 @@ function Home() {
         <div>
             {reversedPosts.map((value, key) => {
                 return (
-                    <div className="post" onClick={() => {history.push(`/post/${value.id}`)}}>{/**navigator.push (where you want to go the route) */}
+                    <div className="post" onClick={() => {history.push(`/post/${value.id}`)}}>{/**navigator.push (where you want to go the route) the route must be specified*/}
                         <div className="title"> {value.title} </div>
                         <div className="body">{value.postText}</div>
                         <div className="footer">{value.username}</div>
