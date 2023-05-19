@@ -45,10 +45,7 @@ function Post() {
     }
 
 
-    const validatifonSchema = yup.object().shape({ // basically checks for stuff like pass too weak name too small valid gmail stuff like that
-        commentBody: yup.string().required("does ya stupid ass not know to type").notOneOf(["fuck", "bitch"], "dont cuss here fool, imma whack yo ass")
 
-    })
 
 
     return (
@@ -62,7 +59,8 @@ function Post() {
             </div>
             <div className="rightSide">
                 <div className="addCommentContainer">
-                    <input type="text" placeholder="Comment" value={newComment} onChange={(event) => {setnewComment(event.target.value)}}/>  {/*this is how you get value from one variabe forms and inputs*/} 
+                    <input type="text" placeholder="Comment" value={newComment} onChange={(event) => {setnewComment(event.target.value)}}/> 
+                     {/*this is how you get value from one variabe forms and inputs*/} 
                     <button onClick={addComment}>Submit</button>
                 </div>
                 <div className="listOfComments">
