@@ -21,7 +21,7 @@ router.post('/login', async (req, res) => {
     console.log(user.password)
     if (!user) res.json({ error: "User Doesn't Exist" });
 
-    bcrypt.compare(password, user.password).then((match) => { // to chech for pass
+    bcrypt.compare(password, user.password).then((match) => { // to chech for pass, match will be true then the pass will be same
         if (!match) res.json({ error: "Wrong Username And Password Combination" });
     
         res.json("YOU LOGGED IN!!!");
