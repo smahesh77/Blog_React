@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const validateToken = require('../middleware/authMiddleware')
 const { comments } = require('../models') // since we make a model called comments in our commentModel
 
 router.get('/:postId', async (req, res) => {
@@ -8,7 +9,7 @@ router.get('/:postId', async (req, res) => {
 
 })
 
-router.post('/', async (req, res) => {
+router.post('/',validateToken, async (req, res) => { // this will go to validateToken middleware first and validate and only post the comment if the token is valid
     const comment = req.body;
     console.log(comment)
     await comments.create(comment)

@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  let history = useHistory();
+
   const login = () => {
     const data = { username: username, password: password };
     axios.post("http://localhost:3001/auth/login", data).then((response) => {
-      console.log(response.data);
-      setPassword('')
-      setUsername('')
+      if (response.data.error) {  // all errors will come here, will be only true when there is a error
+        alert(response.data.error);
+      } else {// use else or it  will create an empty token in storage
+        sessionStorage.setItem("accessToken", response.data);
+        history.push("/");
+      }
     });
   };
   return (
@@ -18,7 +24,6 @@ function Login() {
       <label>Username:</label>
       <input
         type="text"
-        value={username}
         onChange={(event) => {
           setUsername(event.target.value);
         }}
@@ -26,7 +31,6 @@ function Login() {
       <label>Password:</label>
       <input
         type="password"
-        value={password}
         onChange={(event) => {
           setPassword(event.target.value);
         }}

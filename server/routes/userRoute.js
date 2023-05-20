@@ -1,36 +1,44 @@
-const router = require('express').Router()
-const { users } = require('../models') //this is the name of the table you give in postModel not the one that is being exported
-const bcrypt = require('bcrypt')
+const express = require("express");
+const router = express.Router();
+const { users } = require("../models");
+const bcrypt = require("bcrypt");
 
-router.post('/', async (req, res) => {
-    const {username , password} = req.body
-    let hashedPass
-    bcrypt.hash(password, 10).then(async (hash) => { // the hashed pass will be stored in hash
-        const model = await users.create({
-            username: username,
-            password: hash
-        })
-        res.json(model)
-    })
-})
 
-router.post('/login', async (req, res) => {
-    const {username , password} = req.body
+const { sign } = require("jsonwebtoken");
+
+router.post("/", async (req, res) => {
+  const { username, password } = req.body;
+  bcrypt.hash(password, 10).then((hash) => {
+    users.create({
+      username: username,
+      password: hash,
+    });
+    res.json("SUCCESS");
+  });
+});
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = await users.findOne({ where: { username: username } });
+
+  if (!user){
+    res.json({ error: "User Doesn't Exist" });
+  } else {
+    bcrypt.compare(password, user.password).then((match) => {
+        if (!match){
+            res.json({ error: "Wrong Username And Password Combination" });
+        } else {
+            const accessToken = sign(
+                { username: user.username, id: user.id },
+                "shhhhh its a secret"
+              );
+              res.json(accessToken)
+        }
     
-    const user = await users.findOne({where: {username: username}})
-    if (!user) res.json({ error: "User Doesn't Exist" });
-
-    bcrypt.compare(password, user.password).then((match) => { // to chech for pass, match will be true then the pass will be same
-        if (!match) res.json({ error: "Wrong Username And Password Combination" });
-    
-        res.json("YOU LOGGED IN!!!");
-      });
         
-
-})
-
-
+      });
+  }
+});
 
 module.exports = router
-
-
