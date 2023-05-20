@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../helpers/authContext";
+import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom'
+import Reg from "./reg";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const {setAuthState} = useContext(AuthContext) // we are accessing stuff in app.js cause we are passing it through this context how cool is that
 
   let history = useHistory();
 
@@ -14,7 +18,9 @@ function Login() {
       if (response.data.error) {  // all errors will come here, will be only true when there is a error
         alert(response.data.error);
       } else {// use else or it  will create an empty token in storage
-        sessionStorage.setItem("accessToken", response.data);
+        //sessionStorage.setItem("accessToken", response.data); this will get lost when we close the tab to prevent this we use local storage
+        localStorage.setItem("accessToken", response.data);// this will keep us signedin in even different tabs
+        setAuthState(true);
         history.push("/");
       }
     });
@@ -37,6 +43,7 @@ function Login() {
       />
 
       <button onClick={login}> Login </button>
+      
     </div>
   );
 }

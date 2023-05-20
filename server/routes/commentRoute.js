@@ -11,7 +11,10 @@ router.get('/:postId', async (req, res) => {
 
 router.post('/',validateToken, async (req, res) => { // this will go to validateToken middleware first and validate and only post the comment if the token is valid
     const comment = req.body;
+    const username = req.user.username;
+    comment.username = username; 
     console.log(comment)
+    console.log(req.body.test)
     await comments.create(comment)
     res.status(200).json(comment)
 })

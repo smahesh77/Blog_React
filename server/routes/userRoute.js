@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { users } = require("../models");
 const bcrypt = require("bcrypt");
+const validateToken = require('../middleware/authMiddleware')
+
 
 
 const { sign } = require("jsonwebtoken");
@@ -33,12 +35,16 @@ router.post("/login", async (req, res) => {
                 { username: user.username, id: user.id },
                 "shhhhh its a secret"
               );
-              res.json(accessToken)
+            res.json(accessToken)
         }
     
         
       });
   }
 });
+
+router.get('/logchek', validateToken, (req, res) => { // just a security thing dont worry too much about it
+    res.json(req.user)
+})
 
 module.exports = router

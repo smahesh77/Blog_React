@@ -150,7 +150,6 @@ span {
   width: 100%;
   display: grid;
   place-items: center;
-  align-self: center;
   margin-top: 25px;
 }
 

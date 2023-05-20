@@ -14,6 +14,7 @@ function Post() {
     const [postObject, setPostObject] = useState({});// this will get the value given to setpostObject and store it in postobject
     const [comments, setcommentObject] = useState([]);
     const [newComment, setnewComment] = useState([])
+    const [newUserComment, setnewUserComment] = useState([])
 
     useEffect(() => {
         axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
@@ -28,10 +29,10 @@ function Post() {
 
     const addComment =() => {
         axios.post(`http://localhost:3001/comments`, {
-            commentBody: newComment, PostId: id, tokentest: sessionStorage.getItem("accessToken")// to get token from session storage
+            commentBody: newComment, PostId: id, tokentest: localStorage.getItem("accessToken")// to get token from session storage
         }, 
         {headers: {
-            accessToken:  sessionStorage.getItem("accessToken"),
+            accessToken:  localStorage.getItem("accessToken"),
             test: "test got in"// you can send this to your server
         }}).then((response) => {
             if(response.data.error){
@@ -43,7 +44,7 @@ function Post() {
                     autoClose: 3000, // Set autoClose duration in milliseconds
                     closeButton: true, // Show close button
                 })    
-                const commentToAdd = { commentBody: newComment };
+                const commentToAdd = { commentBody: newComment, username: response.data.username };
                 setcommentObject([...comments, commentToAdd]); // this is how you add an element to an existing list
                 setnewComment("");
             }
@@ -78,7 +79,8 @@ function Post() {
                         return (
                             <div key={key} className="comment">
                                 {comment.commentBody }
-                                
+                                <hr></hr>
+                                <label>Username: {comment.username}</label>
                             </div>
                         );
                     })}
