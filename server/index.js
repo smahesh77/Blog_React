@@ -12,7 +12,7 @@ db.sequelize.sync().then(() => {
         console.log(`listening to port ${port}`)
     })
 }).catch((err) => {
-    console.log(err)
+    console.log(err);
 })
 
 

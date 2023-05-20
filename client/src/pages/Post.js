@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useParams, useHistory } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik' // for forms
 import * as yup from 'yup' //for validation
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function Post() {
+    let history = useHistory();
     let { id } = useParams();
     const [postObject, setPostObject] = useState({});// this will get the value given to setpostObject and store it in postobject
     const [comments, setcommentObject] = useState([]);
@@ -23,26 +27,31 @@ function Post() {
     }, []); // always put [] and the states in which you want to rerun the api requests never leave empty(just put[])
 
     const addComment =() => {
-        axios.post(`http://localhost:3001/comments`, {commentBody: newComment, PostId: id}).then((response) => {
-            alert("new comment added ("+ newComment + ")")
-            const commentToAdd = { commentBody: newComment };
-            setcommentObject([...comments, commentToAdd]);
-            setnewComment("");
+        axios.post(`http://localhost:3001/comments`, {
+            commentBody: newComment, PostId: id, tokentest: sessionStorage.getItem("accessToken")// to get token from session storage
+        }, 
+        {headers: {
+            accessToken:  sessionStorage.getItem("accessToken"),
+            test: "test got in"// you can send this to your server
+        }}).then((response) => {
+            if(response.data.error){
+                alert("You are not Authorized, please log in!")
+                history.push("/log");
+            }else {
+                toast('Comment added!!!', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000, // Set autoClose duration in milliseconds
+                    closeButton: true, // Show close button
+                })    
+                const commentToAdd = { commentBody: newComment };
+                setcommentObject([...comments, commentToAdd]); // this is how you add an element to an existing list
+                setnewComment("");
+            }
+            
         })
     }
 
-    const initialValues = {
-        
-    };
-
-    const onSubmit = (data) => {
-        // axios.post("http://localhost:3001/posts", data).then((response) => {// sends the data to server 
-        //     console.log(response.data)
-        //     console.log("IT WORKS")
-
-        // })
-        console.log("submited")
-    }
+    
 
 
 
@@ -50,6 +59,7 @@ function Post() {
 
     return (
         <div className="postPage">
+             <ToastContainer /> {/**to show toasts */}
             <div className="leftSide">
                 <div className="post" id="individual">
                     <div className="title"> {postObject.title} </div>
