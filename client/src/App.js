@@ -15,31 +15,39 @@ import axios from "axios";
 
 function App() {
   let history = useHistory()
-  const [authState, setAuthState] = useState(false);
+  const [username, setusername] = useState("")
+  const [authState, setAuthState] = useState({
+    username: "",
+    id: 0,
+    status: false
+  });
 
   
 
   useEffect(() => {
-    if(localStorage.getItem("accessToken")){
-      setAuthState(true)
-    }
-    // axios
-    //   .get("http://localhost:3001/auth/logchek", {
-    //     headers: {
-    //       accessToken: localStorage.getItem("accessToken"),
-    //     },
-    //   })
-    //   .then((response) => {
-    //     if (response.data.error) {
-    //       setAuthState(false);
-    //     } else {
-    //       setAuthState(true);
-    //     }
-    //   });
+    axios // this will verify the token in the server to set the auth state and returns username and all that
+      .get("http://localhost:3001/auth/logchek", {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          setAuthState({...authState, status: false});// use ... when you only want to change some of the fields
+        } else {
+          setAuthState({
+            username:response.data.username,
+            id: response.data.id,
+            status: true
+          });
+        }
+      });
   }, []);
   const logout = () => {
     localStorage.removeItem("accessToken")
-    setAuthState(false)
+    setAuthState({username: "",
+    id: 0,
+    status: false});
     //history.push("/log");
   }
 
@@ -51,7 +59,7 @@ function App() {
           <div className="navbar">
             <Link to="/"> Home Page</Link>
             <Link to="/createpost"> Create A Post</Link>
-            {!authState ?(
+            {!authState.status ?(
               <>
                 <Link to="/log"> Login</Link>
                 <Link to="/reg"> reg</Link>
@@ -60,7 +68,7 @@ function App() {
             }
           </div>
 
-
+            <h1>{authState.username}</h1>
           <Switch>   {/* to select routes we use switch, this doest take you to that page
                     just loads the componet you gave on the route on the current page */}
             <Route path='/' exact component={Home} />

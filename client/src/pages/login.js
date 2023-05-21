@@ -19,8 +19,12 @@ function Login() {
         alert(response.data.error);
       } else {// use else or it  will create an empty token in storage
         //sessionStorage.setItem("accessToken", response.data); this will get lost when we close the tab to prevent this we use local storage
-        localStorage.setItem("accessToken", response.data);// this will keep us signedin in even different tabs
-        setAuthState(true);
+        localStorage.setItem("accessToken", response.data.token);// this will keep us signedin in even different tabs
+        setAuthState({
+          username: response.data.username,
+          id: response.data.id,
+          status: true,
+        });
         history.push("/");
       }
     });
