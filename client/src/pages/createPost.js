@@ -13,10 +13,17 @@ function CreatePost() {
     };
 
     const onSubmit = (data) => {
+
         axios.post("http://localhost:3001/posts", data).then((response) => {// sends the data to server 
-            console.log(response.data)
-            console.log("IT WORKS")
-            history.push("/")
+            if (response.data.error) {
+                alert("You are not Authorized, please log in!")
+                history.push("/log");
+            } else {
+                console.log(response.data)
+                console.log("IT WORKS")
+                history.push("/")
+            }
+
         })
     }
 
@@ -34,7 +41,7 @@ function CreatePost() {
                     <label>Title: </label>
                     <Field
                         id="inputCreatePost"
-                        name="title"                        
+                        name="title"
                         placeholder="(Ex. Title...)"
                     />  {/* thw title postText and username has the exactly same as that of the sql model only then the data could be send*/}
                     <ErrorMessage className='error' name="title" component="span" />

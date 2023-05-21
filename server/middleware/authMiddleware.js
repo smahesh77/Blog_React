@@ -7,7 +7,7 @@ const validateToken = (req, res, next) => {
     console.log(req.body.tokentest)
     console.log(req.header("test"))
     if(!accessToken) {
-        return res.json({errorr: "User is not logged in"})
+        return res.json({error: "User is not logged in"})
     }
 
     try {

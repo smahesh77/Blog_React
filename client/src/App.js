@@ -2,37 +2,62 @@ import './App.css';
 import React from 'react'
 import { AuthContext } from "./helpers/authContext";
 import { useState, useEffect } from "react";
+import { useParams, useHistory } from 'react-router-dom'
+
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import Home from './pages/home';
 import createPost from './pages/createPost';
 import Post from './pages/Post';
 import Reg from './pages/reg';
 import Login from './pages/login';
+import axios from "axios";
 
 
 function App() {
+  let history = useHistory()
   const [authState, setAuthState] = useState(false);
 
+  
+
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if(localStorage.getItem("accessToken")){
       setAuthState(true)
     }
-  }, [])
+    // axios
+    //   .get("http://localhost:3001/auth/logchek", {
+    //     headers: {
+    //       accessToken: localStorage.getItem("accessToken"),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     if (response.data.error) {
+    //       setAuthState(false);
+    //     } else {
+    //       setAuthState(true);
+    //     }
+    //   });
+  }, []);
+  const logout = () => {
+    localStorage.removeItem("accessToken")
+    setAuthState(false)
+    //history.push("/log");
+  }
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{authState, setAuthState}}> {/* now auth state and setauth will be aaccesseble from all the componenets under this tag */}
+      <AuthContext.Provider value={{ authState, setAuthState }}> {/* now auth state and setauth will be aaccesseble from all the componenets under this tag */}
         <Router>  {/* this is like navigator in flutter, 
                  goes to the component of the give path that will be a react page */}
           <div className="navbar">
             <Link to="/"> Home Page</Link>
             <Link to="/createpost"> Create A Post</Link>
-             {!authState && (
+            {!authState ?(
               <>
                 <Link to="/log"> Login</Link>
                 <Link to="/reg"> reg</Link>
               </>
-            )} 
+            ):<button onClick={logout}>Logout</button>
+            }
           </div>
 
 

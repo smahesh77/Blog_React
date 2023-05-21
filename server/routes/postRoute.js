@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const validateToken = require('../middleware/authMiddleware')
 const { Posts } = require('../models') //this is the name of the table you give in postModel not the one that is being exported
 
 router.get('/', async (req, res) => {
@@ -13,7 +14,7 @@ router.get('/ById/:id', async (req, res) => {
 
 })
 
-router.post('/', async (req, res) => {
+router.post('/',validateToken, async (req, res) => {
     const post = req.body;
     console.log(post)
     await Posts.create(post)

@@ -43,8 +43,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get('/logchek', validateToken, (req, res) => { // just a security thing dont worry too much about it
-    res.json(req.user)
-})
+router.get("/logchek", validateToken, (req, res) => {
+    res.json(req.user);
+  });
 
 module.exports = router

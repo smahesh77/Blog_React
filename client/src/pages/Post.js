@@ -35,7 +35,9 @@ function Post() {
             accessToken:  localStorage.getItem("accessToken"),
             test: "test got in"// you can send this to your server
         }}).then((response) => {
+            
             if(response.data.error){
+                console.log("are you stupid")
                 alert("You are not Authorized, please log in!")
                 history.push("/log");
             }else {
