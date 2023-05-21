@@ -2,20 +2,25 @@ const express = require("express");
 const router = express.Router();
 const { users } = require("../models");
 const bcrypt = require("bcrypt");
-const validateToken = require('../middleware/authMiddleware')
-
+const {validateToken} = require('../middleware/authMiddleware')
 
 
 const { sign } = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
-  bcrypt.hash(password, 10).then((hash) => {
-    users.create({
-      username: username,
-      password: hash,
-    });
-    res.json("SUCCESS");
+  bcrypt.hash(password, 10).then(async(hash) => {
+    try {
+      await users.create({
+        username: username,
+        password: hash,
+      });
+      
+      console.log(tok)
+      res.json({msg:"User Created"});
+    } catch (err) {
+      res.json("User already exists")
+    }
   });
 });
 
@@ -35,6 +40,7 @@ router.post("/login", async (req, res) => {
                 { username: user.username, id: user.id },
                 "shhhhh its a secret"
               );
+              
             res.json({token:accessToken, username:user.username, id: user.id})
         }
     

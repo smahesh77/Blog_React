@@ -42,6 +42,10 @@ function Post() {
                 }
             }).then((response) => {
 
+                if(response.data === "err"){
+                    alert("enter somethin' fool")
+                }
+
                 if (response.data.error) {
                     console.log("are you stupid")
                     alert("You are not Authorized, please log in!")
@@ -57,25 +61,28 @@ function Post() {
                     setnewComment("");
                 }
 
+            }).catch((err) => {
+                alert(err)
             })
 
 
     }
 
-    const deleteComment = (id) => {
+    const deleteComment = (commentId) => {
         axios
-            .delete(`http://localhost:3001/comments/${id}`, {
-                headers: { accessToken: localStorage.getItem("accessToken") },
-            })
-            .then((response) => {
-                alert(response.data)
-                setcommentObject(
-                    comments.filter((val) => {
-                        return val.id != id;
-                    })
-                );
-            });
-    }
+          .delete(`http://localhost:3001/comments/${commentId}`, {
+            headers: { accessToken: localStorage.getItem("accessToken") },
+          })
+          .then((response) => {
+            alert("Hmmm whatcha delete bro, was it something Sus 📸📸📸");
+            setcommentObject((prevComments) =>
+              prevComments.filter((comment) => comment.id !== commentId)
+            );
+          })
+          .catch((error) => {
+            alert("Hmmm,that was pretty fast was it something Sus 📸📸📸");
+          });
+      };
 
 
 

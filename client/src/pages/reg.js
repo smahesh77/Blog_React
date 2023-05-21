@@ -2,8 +2,11 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function Reg() {
+  
+  let history = useHistory();
   const initialValues = {
     username: "",
     password: "",
@@ -15,8 +18,17 @@ function Reg() {
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/auth", data).then(() => {
+    axios.post("http://localhost:3001/auth", data).then((response) => {
       console.log(data);
+      alert(response.data.msg)
+      if (response.data.error) {  // all errors will come here, will be only true when there is a error
+        alert(response.data.error);
+      } else {// use else or it  will create an empty token in storage
+        //sessionStorage.setItem("accessToken", response.data); this will get lost when we close the tab to prevent this we use local storage
+        localStorage.setItem("accessToken", response.data.token);// this will keep us signedin in even different tabs
+        
+        history.push("/log");
+      }
     });
   };
 

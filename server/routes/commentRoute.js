@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const validateToken = require('../middleware/authMiddleware')
+const {validateToken} = require('../middleware/authMiddleware')
 const { comments } = require('../models') // since we make a model called comments in our commentModel
 
 router.get('/:postId', async (req, res) => {
@@ -15,8 +15,13 @@ router.post('/',validateToken, async (req, res) => { // this will go to validate
     comment.username = username; 
     console.log(comment)
     console.log(req.body.test)
-    await comments.create(comment)
-    res.status(200).json(comment)
+    try {
+      await comments.create(comment)
+      res.status(200).json(comment)
+    } catch (err) {
+        res.json("err")
+    }
+    
 })
 
 
@@ -24,13 +29,20 @@ router.delete("/:commentId", validateToken, async (req, res) => {
     const commentId = req.params.commentId;
     console.log(commentId)
     console.log("HHHHHHEEEEEEEEELLLLLLLLLLLOOOOOO")
-    await comments.destroy({
-      where: {
-        id: commentId,
-      },
-    });
-  
-    res.json("DELETED SUCCESSFULLY");
+    
+    if(commentId === undefined){
+        console.log("HOW DID I GET IN")
+        await comments.destroy({
+            where: {
+              id: commentId,
+            },
+          });
+        
+          res.json("DELETED SUCCESSFULLY");
+    }else {
+        res.json("error")
+    }
+    
   });
 
 module.exports = router
