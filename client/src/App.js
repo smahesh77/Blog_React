@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react'
 import { AuthContext } from "./helpers/authContext";
 import { useState, useEffect } from "react";
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom';
 
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import Home from './pages/home';
@@ -69,7 +69,7 @@ function App() {
           </div>
 
             <h1>{authState.username}</h1>
-          <Switch>   {/* to select routes we use switch, this doest take you to that page
+          <Switch>   {/* to select routes we use switch, this doesnt take you to that page
                     just loads the componet you gave on the route on the current page */}
             <Route path='/' exact component={Home} />
             <Route path='/createpost' exact component={createPost} />
