@@ -70,7 +70,7 @@ function App() {
 
             <h1>{authState.username}</h1>
           <Switch>   {/* to select routes we use switch, this doesnt take you to that page
-                    just loads the componet you gave on the route on the current page */}
+                      just loads the componet you gave on the route on the current page */}
             <Route path='/' exact component={Home} />
             <Route path='/createpost' exact component={createPost} />
             <Route path='/post/:id' exact component={Post} />
