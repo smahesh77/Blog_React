@@ -2,4 +2,4 @@
 
 ## A simple site where users can read and post blogs (with auth and comment functionality)
 
-### A hosted link will be published here soon....
+### hosted at https://bloggerspub.netlify.app/
